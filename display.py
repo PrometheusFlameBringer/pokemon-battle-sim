@@ -30,7 +30,7 @@ class Displayer:
 
         try:
             x = int(input("\nEnter move to use: "))
-            if x > 4 or x < 1:
+            if x > len(moves) or x < 1:
                 raise ValueError()
         except:
             os.system('cls' if os.name == 'nt' else 'clear')
@@ -40,4 +40,6 @@ class Displayer:
             self.move(x-1)
 
     def move(self, moveNum):
-        print(self.stage.use_move(self.pokeX.get_move(moveNum), self.pokeX, self.pokeY))
+        input(self.stage.use_move(self.pokeX.get_move(moveNum), self.pokeX, self.pokeY))
+        self.pokeX, self.pokeY = self.pokeY, self.pokeX
+        self.get_state()
