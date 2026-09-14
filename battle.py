@@ -17,5 +17,13 @@ class Stage:
 
         return f"{defender.name} took {damage} damage!"
 
+    def team_heal(self, team):
+        for i in team:
+            i.full_heal()
+
+    def heal_all(self):
+        self.team_heal(self.team1)
+        self.team_heal(self.team2)
+
     def battle_start(self):
         return [self.team1[0], self.team2[0]]
