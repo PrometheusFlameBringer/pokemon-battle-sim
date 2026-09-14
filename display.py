@@ -19,7 +19,7 @@ class Displayer:
 
     def get_state(self):
         os.system('cls' if os.name == 'nt' else 'clear')
-
+        
         print(f"\t\t\t{self.pokeY.species}\n\t\t\t{self.pokeY.currHP}/{self.pokeY.get_maxHP()}\n\n\n{self.pokeX.name}\n{self.pokeX.currHP}/{self.pokeX.get_maxHP()}\n")
         
         self.list_moves()
