@@ -25,5 +25,12 @@ class Stage:
         self.team_heal(self.team1)
         self.team_heal(self.team2)
 
-    def battle_start(self):
-        return [self.team1[0], self.team2[0]]
+    def get_alive(self,team):
+        for i in team:
+            if i.currHP > 0:
+                return i
+
+        return -1
+
+    def get_start(self):
+        return self.get_alive(self.team1),self.get_alive(self.team2)
