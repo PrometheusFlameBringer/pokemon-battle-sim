@@ -1,7 +1,7 @@
 from poke_stats import PokeStats
 
 class Pokemon:
-    def __init__(self, name, species, level, type1, type2=None, moves=[]):
+    def __init__(self, name, species, level, type1, type2=None, moves=None):
         self.name = name
         self.species = species
         self.level = level
@@ -9,7 +9,7 @@ class Pokemon:
         self.type2 = type2
         self.stats = PokeStats()
         self.currHP = 0
-        self.moves = moves
+        self.moves = moves if moves is not None else []
 
     #Stats
     def rotate_stat(self, prefix):

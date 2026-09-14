@@ -26,7 +26,7 @@ team2[0].set_stats({
     "SpDef": 164, 
     "Spd": 122})
 team2[0].add_move(Move("Bubble", "Water", False, 40, 100, 25, 0))
-#team2[0].add_move(Move("Scratch", "Normal", True, 40, 100, 35, 0))
+team2[0].add_move(Move("Scratch", "Normal", True, 40, 100, 35, 0))
 
 battle = Stage(team1, team2)
 Displayer(battle)
