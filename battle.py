@@ -6,6 +6,8 @@ class Stage:
         self.team1 = team1
         self.team2 = team2
         self.calculator = None
+        self.move_queue = []
+        self.moves_list = {}
 
     def use_move(self, move, attacker, defender):
         self.calculator = Damage(attacker, defender)
