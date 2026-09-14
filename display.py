@@ -16,13 +16,28 @@ class Displayer:
         self.pokeX, self.pokeY = self.stage.get_start()
 
         self.get_state()
-        self.list_moves()
 
     def get_state(self):
         os.system('cls' if os.name == 'nt' else 'clear')
+
         print(f"\t\t\t{self.pokeY.species}\n\t\t\t{self.pokeY.currHP}/{self.pokeY.get_maxHP()}\n\n\n{self.pokeX.name}\n{self.pokeX.currHP}/{self.pokeX.get_maxHP()}\n")
+        
+        self.list_moves()
 
     def list_moves(self):
         moves = self.pokeX.get_moves()
         [print(f"{i+1}) {moves[i].name} | {moves[i].pp}") for i in range(len(moves))]
-        input("\nEnter move to use: ")
+
+        try:
+            x = int(input("\nEnter move to use: "))
+            if x > 4 or x < 1:
+                raise ValueError()
+        except:
+            os.system('cls' if os.name == 'nt' else 'clear')
+            input("Invalid input please enter the number of the move.\nPress enter to continue...")
+            self.get_state()
+        else:
+            self.move(x)
+
+    def move(self, moveNum):
+        pass
