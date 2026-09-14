@@ -53,6 +53,9 @@ class Pokemon:
         else:
             print("Cannot add more than 4 moves.")
 
+    def get_move(self, i):
+        return self.moves[i]
+
     #Battle
     def get_currHP(self):
         return self.currHP

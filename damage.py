@@ -2,9 +2,9 @@ from typechart import TypeChart
 import random
 
 class Damage:
-    def __init__(self, defender, attacker):
-        self.defender = defender
+    def __init__(self, attacker, defender):
         self.attacker = attacker
+        self.defender = defender
         self.typeChart = TypeChart()
 
     def calculate_damage(self, move, other = 1):
@@ -28,12 +28,12 @@ class Damage:
             modifier *= 1.5
 
         #Type Effectiveness
-        modifier *= self.typeChart.get_effectiveness(self.defender.type1, self.move.poke_type) 
+        modifier *= self.typeChart.get_effectiveness(self.defender.type1, move.poke_type) 
         if self.defender.type2:
-            modifier *= self.typeChart.get_effectiveness(self.defender.type2, self.move.poke_type)
+            modifier *= self.typeChart.get_effectiveness(self.defender.type2, move.poke_type)
 
         #STAB
-        if self.move.poke_type == self.attacker.type1 or self.move.poke_type == self.attacker.type2:
+        if move.poke_type == self.attacker.type1 or move.poke_type == self.attacker.type2:
             modifier *= 1.5
 
         #Other Modifiers

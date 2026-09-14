@@ -19,7 +19,7 @@ class Displayer:
 
     def get_state(self):
         os.system('cls' if os.name == 'nt' else 'clear')
-        
+
         print(f"\t\t\t{self.pokeY.species}\n\t\t\t{self.pokeY.currHP}/{self.pokeY.get_maxHP()}\n\n\n{self.pokeX.name}\n{self.pokeX.currHP}/{self.pokeX.get_maxHP()}\n")
         
         self.list_moves()
@@ -37,7 +37,7 @@ class Displayer:
             input("Invalid input please enter the number of the move.\nPress enter to continue...")
             self.get_state()
         else:
-            self.move(x)
+            self.move(x-1)
 
     def move(self, moveNum):
-        pass
+        print(self.stage.use_move(self.pokeX.get_move(moveNum), self.pokeX, self.pokeY))
