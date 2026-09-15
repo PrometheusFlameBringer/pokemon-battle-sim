@@ -41,7 +41,9 @@ class Displayer:
 
     def move(self, moveNum):
         move = self.pokeX.get_move(moveNum)
-        self.stage.moves_list
+        self.stage.add_move(move,self.pokeX.get_stat("Spd"))
         input(self.stage.use_move(move, self.pokeX, self.pokeY))
+        self.switch_poke()
+
+    def switch_poke(self):
         self.pokeX, self.pokeY = self.pokeY, self.pokeX
-        self.get_state()
