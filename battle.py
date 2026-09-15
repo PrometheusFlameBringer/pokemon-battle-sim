@@ -38,3 +38,18 @@ class Stage:
 
     def get_start(self):
         return self.get_alive(self.team1),self.get_alive(self.team2)
+
+    def add_move(self,move,pokeSpeed):
+        prio = move.get_priority()
+
+        if prio not in list(self.moves_list.keys()):
+            self.moves_list[prio] = {pokeSpeed:[move]}
+            return
+
+        x = self.moves_list[prio]
+        if pokeSpeed not in list(x.keys()):
+            x[pokeSpeed] = [move]
+            return
+
+        x[pokeSpeed].append(move)
+        return

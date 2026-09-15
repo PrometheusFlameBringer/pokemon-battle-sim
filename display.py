@@ -40,6 +40,8 @@ class Displayer:
             self.move(x-1)
 
     def move(self, moveNum):
-        input(self.stage.use_move(self.pokeX.get_move(moveNum), self.pokeX, self.pokeY))
+        move = self.pokeX.get_move(moveNum)
+        self.stage.moves_list
+        input(self.stage.use_move(move, self.pokeX, self.pokeY))
         self.pokeX, self.pokeY = self.pokeY, self.pokeX
         self.get_state()
