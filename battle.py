@@ -54,20 +54,17 @@ class Stage:
         x[pokeSpeed].append(move)
         return
 
-    def set_queue(self):
-        prio=list(self.moves_list.keys())
+    def set_queue(self, moves = None):
+        prio = list(moves.keys()) if moves else list(self.moves_list.keys())
         prio.sort(reverse=True)
-        
-        for i in prio:
-            for j in self.set_queue_speed(self.moves_list[i]):
-                self.move_queue.append(j[0].name)
-        
-    def set_queue_speed(self, moves):
-        speeds = list(moves.keys())
-        speeds.sort(reverse=True)
         out = []
         
-        for i in speeds:
-            out.append(moves[i])
+        for i in prio:
+            if moves:
+                out.append(moves[i][0].name)
+                continue
+            
+            for j in self.set_queue(self.moves_list[i]):
+                self.move_queue.append(j)
         
         return out
