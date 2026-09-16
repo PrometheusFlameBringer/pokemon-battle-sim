@@ -61,7 +61,7 @@ class Stage:
         
         for i in prio:
             if moves:
-                out.append(moves[i][0].name)
+                out.append(moves[i])
                 continue
             
             for j in self.set_queue(self.moves_list[i]):
