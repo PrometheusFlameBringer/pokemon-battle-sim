@@ -19,7 +19,8 @@ class Displayer:
             for i in range(2):
                 self.rotation()
 
-            print(self.stage.moves_list)
+            self.stage.set_queue()
+            self.get_state(str(self.stage.move_queue))
             break
             
             if self.pokeX.get_currHP() == 0 or self.pokeY.get_currHP() == 0:
@@ -57,7 +58,6 @@ class Displayer:
     def move(self, moveNum):
         move = self.pokeX.get_move(moveNum)
         self.stage.add_move(move,self.pokeX.get_stat("Spd"))
-        input(self.stage.use_move(move, self.pokeX, self.pokeY))
 
     def switch_poke(self):
         self.pokeX, self.pokeY = self.pokeY, self.pokeX
