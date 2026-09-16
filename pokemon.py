@@ -177,3 +177,4 @@ class Move:
 
     def set_target(self, x):
         self.target = x
+    

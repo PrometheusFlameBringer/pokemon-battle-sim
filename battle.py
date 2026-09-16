@@ -16,11 +16,12 @@ class Stage:
         if move.accuracy >= 100:
             acc_check = random.randint(1, 100)
             if acc_check > move.accuracy:
-                return f"{attacker.name}'s {move.name} missed!"
+                return f"{move.name} missed"
 
         damage = self.calculator.calculate_damage(move)
+        defender.dmg(damage)
 
-        return f"{defender.species} took {damage} damage!"
+        return f"{move.user.name} dealt {damage} damage"
 
     def team_heal(self, team):
         for i in team:
@@ -70,6 +71,3 @@ class Stage:
                 self.move_queue.append(j)
         
         return out
-
-    def use_queue(self):
-        self.set_queue()

@@ -19,12 +19,23 @@ class Displayer:
             for i in range(2):
                 self.rotation()
 
-            self.stage.use_queue()
-            self.get_state(str(self.stage.move_queue))
+            self.use_queue()
             break
             
             if self.pokeX.get_currHP() == 0 or self.pokeY.get_currHP() == 0:
                 break
+
+    def use_queue(self):
+        self.stage.set_queue()
+        queue = self.stage.move_queue
+
+        for i in queue:
+            pokeMove = i[0]
+            self.rotation(f"{pokeMove.user.name} used {pokeMove.name}")
+            self.get_state(self.stage.use_move(pokeMove))
+
+        self.stage.move_queue.clear()
+        self.stage.moves_list.clear()
 
     def rotation(self,message=None):
         self.switch_poke()
@@ -37,8 +48,10 @@ class Displayer:
 
         if message:
             print(message)
+            input("Press enter to continue...")
             return
         self.list_moves()
+        input("Press enter to continue...")
 
     def list_moves(self):
         moves = self.pokeX.get_moves()
