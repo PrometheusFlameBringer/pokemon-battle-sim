@@ -9,7 +9,8 @@ class Stage:
         self.move_queue = []
         self.moves_list = {}
 
-    def use_move(self, move, attacker, defender):
+    def use_move(self, move):
+        attacker, defender = move.get_user(), move.get_target()
         self.calculator = Damage(attacker, defender)
 
         if move.accuracy >= 100:
@@ -39,7 +40,8 @@ class Stage:
     def get_start(self):
         return self.get_alive(self.team1),self.get_alive(self.team2)
 
-    def add_move(self,move,pokeSpeed):
+    def add_move(self,move,pokeSpeed, target):
+        move.set_target(target)
         prio = move.get_priority()
 
         if prio not in list(self.moves_list.keys()):
@@ -53,7 +55,7 @@ class Stage:
 
         x[pokeSpeed].append(move)
         return
-
+    
     def set_queue(self, moves = None):
         prio = list(moves.keys()) if moves else list(self.moves_list.keys())
         prio.sort(reverse=True)
@@ -68,3 +70,6 @@ class Stage:
                 self.move_queue.append(j)
         
         return out
+
+    def use_queue(self):
+        self.set_queue()
