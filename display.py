@@ -13,15 +13,30 @@ class Displayer:
         if self.heal:
             self.stage.heal_all()
 
-        self.pokeX, self.pokeY = self.stage.get_start()
+        self.pokeY, self.pokeX = self.stage.get_start()
 
-        self.get_state()
+        while True:
+            for i in range(2):
+                self.rotation()
 
-    def get_state(self):
+            print(self.stage.moves_list)
+            break
+            
+            if self.pokeX.get_currHP() == 0 or self.pokeY.get_currHP() == 0:
+                break
+
+    def rotation(self,message=None):
+        self.switch_poke()
+        self.get_state(message)
+
+    def get_state(self,message):
         os.system('cls' if os.name == 'nt' else 'clear')
 
         print(f"\t\t\t{self.pokeY.species}\n\t\t\t{self.pokeY.currHP}/{self.pokeY.get_maxHP()}\n\n\n{self.pokeX.name}\n{self.pokeX.currHP}/{self.pokeX.get_maxHP()}\n")
-        
+
+        if message:
+            print(message)
+            return
         self.list_moves()
 
     def list_moves(self):
@@ -43,7 +58,6 @@ class Displayer:
         move = self.pokeX.get_move(moveNum)
         self.stage.add_move(move,self.pokeX.get_stat("Spd"))
         input(self.stage.use_move(move, self.pokeX, self.pokeY))
-        self.switch_poke()
 
     def switch_poke(self):
         self.pokeX, self.pokeY = self.pokeY, self.pokeX
