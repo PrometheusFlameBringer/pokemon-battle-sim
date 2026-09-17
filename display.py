@@ -20,7 +20,6 @@ class Displayer:
                 self.rotation()
 
             self.use_queue()
-            break
             
             if self.pokeX.get_currHP() == 0 or self.pokeY.get_currHP() == 0:
                 break

@@ -11,8 +11,8 @@ class Damage:
         #Declare values
         level = self.attacker.level
         power = move.power
-        attack = self.attacker.stats.get_Atk() if move.physical else self.attacker.stats.get_SpAtk()
-        defense = self.defender.stats.get_Def() if move.physical else self.defender.stats.get_SpDef()
+        attack = self.attacker.stats.get_Atk() if move.physical == "Physical" else self.attacker.stats.get_SpAtk()
+        defense = self.defender.stats.get_Def() if move.physical == "Physical" else self.defender.stats.get_SpDef()
 
         #Main formula
         damage = (((((2*level)//5)+ 2) * power * (attack/defense))//50) + 2
@@ -22,7 +22,7 @@ class Damage:
         random_factor = random.randint(85, 100) / 100
         modifier = random_factor
 
-        #Critical Hit
+        #Critical Hit 
         critical = random.randint(1, 24)
         if critical == 24:
             modifier *= 1.5

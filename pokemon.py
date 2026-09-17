@@ -104,7 +104,7 @@ class Move:
     def __init__(self, 
                  name:str, 
                  poke_type:str, 
-                 physical:bool, 
+                 physical:str, 
                  power:int, 
                  accuracy:int, 
                  pp:int, 
