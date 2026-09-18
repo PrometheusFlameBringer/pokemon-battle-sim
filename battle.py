@@ -32,9 +32,9 @@ class Stage:
         self.team_heal(self.team2)
 
     def get_alive(self,team):
-        for i in team:
-            if i.currHP > 0:
-                return i
+        for i in range(len(team)):
+            if team[i].currHP > 0:
+                return team.pop(i)
 
         return -1
 
