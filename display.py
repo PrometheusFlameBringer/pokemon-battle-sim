@@ -23,6 +23,7 @@ class Displayer:
             
             if self.pokeX.get_currHP() == 0 or self.pokeY.get_currHP() == 0:
                 break
+        print(self.stage.team1 | self.stage.team2)
 
     def use_queue(self):
         self.stage.set_queue()
@@ -40,7 +41,7 @@ class Displayer:
         self.switch_poke()
         self.get_state(message)
 
-    def get_state(self,message):
+    def get_state(self,message=None):
         os.system('cls' if os.name == 'nt' else 'clear')
 
         print(f"\t\t\t{self.pokeY.species}\n\t\t\t{self.pokeY.currHP}/{self.pokeY.get_maxHP()}\n\n\n{self.pokeX.name}\n{self.pokeX.currHP}/{self.pokeX.get_maxHP()}\n")
@@ -48,8 +49,10 @@ class Displayer:
         if message:
             print(message)
             input("Press enter to continue...")
+            message = None
             return
-        self.list_moves()
+        if self.list_moves() == -1:
+            return self.get_state()
         input("Press enter to continue...")
 
     def list_moves(self):
@@ -63,7 +66,7 @@ class Displayer:
         except:
             os.system('cls' if os.name == 'nt' else 'clear')
             input("Invalid input please enter the number of the move.\nPress enter to continue...")
-            self.get_state()
+            return -1
         else:
             self.move(x-1)
 
