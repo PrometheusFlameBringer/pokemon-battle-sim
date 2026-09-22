@@ -101,16 +101,7 @@ class Pokemon:
         return stat
 
 class Move:
-    def __init__(self, 
-                 name:str, 
-                 poke_type:str, 
-                 physical:str, 
-                 power:int, 
-                 accuracy:int, 
-                 pp:int, 
-                 priority:int,
-                 user:Pokemon,
-                 target:Pokemon = None):
+    def __init__(self, name:str, poke_type:str, physical:str, power:int, accuracy:int, pp:int, priority:int,user:Pokemon, target:Pokemon = None):
         if poke_type not in VALID_TYPES:
             raise ValueError(f"{poke_type} is an invalid Pokemon type.")
         
