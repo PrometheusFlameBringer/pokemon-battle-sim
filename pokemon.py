@@ -1,17 +1,22 @@
 from poke_stats import PokeStats
+from poke import PokemonBase
 
 VALID_TYPES = ["Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting", "Poison", "Ground", "Flying", "Psychic", "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy"]
 
 class Pokemon:
-    def __init__(self, name, species, level, type1, type2=None, moves=None):
+    def __init__(self, name, species, level, moves=None):
         self.name = name
         self.species = species
         self.level = level
-        self.type1 = type1
-        self.type2 = type2
+        self.type1 = None
+        self.type2 = None
         self.stats = PokeStats()
         self.currHP = 0
         self.moves = moves if moves is not None else []
+        
+    #Set base from species
+    def set_base(self):
+        self.set_stats()
 
     #Stats
     def rotate_stat(self, prefix):
@@ -28,12 +33,13 @@ class Pokemon:
                 print(method())
                 continue
     
-    def set_stats(self, stats = None):
-        if stats:
-            for stat, value in stats.items():
-                getattr(self.stats, f"set_{stat}")(value)
-        else:
-            self.rotate_stat("set_")
+    def set_stats(self, EVs=None):
+        if EVs is None:
+            EVs = {stat: 0 for stat in self.stats.__dict__.keys()}
+
+        cur_stats = PokemonBase(self.species).set_stats(EVs, self.level)
+        for stat, value in cur_stats.items():
+            self.set_stat(stat, value)
 
     def get_stats(self):
         self.rotate_stat("get_")
@@ -42,8 +48,8 @@ class Pokemon:
         return getattr(self.stats, "get_" + self.stat_check(stat))()
 
     def set_stat(self, stat=None, value=None):
-        if stat is None:
-            stat = self.stat_check()
+        stat = self.stat_check(stat)
+        
         if value is None:
             value = self.num_check(stat)
         getattr(self.stats, "set_" + stat)(value)
@@ -88,7 +94,10 @@ class Pokemon:
                     break
             return out
     
-    def stat_check(self, stat= ""):
+    def stat_check(self, stat=None):
+        if stat:
+            return stat.replace("-","_")
+        stat = ""
         while True:
             if stat == "":
                 stat = input("Enter stat: ")
@@ -100,6 +109,8 @@ class Pokemon:
             stat = input("Enter stat: ")
         return stat
 
+    
+    
 class Move:
     def __init__(self, name:str, poke_type:str, physical:str, power:int, accuracy:int, pp:int, priority:int,user:Pokemon, target:Pokemon = None):
         if poke_type not in VALID_TYPES:
