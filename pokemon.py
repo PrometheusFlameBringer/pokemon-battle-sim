@@ -1,7 +1,7 @@
 from poke_stats import PokeStats
 from poke import PokemonBase
 
-VALID_TYPES = ["Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting", "Poison", "Ground", "Flying", "Psychic", "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy"]
+VALID_TYPES = ["normal", "fire", "water", "electric", "grass", "ice", "fighting", "poison", "ground", "flying", "psychic", "bug", "rock", "ghost", "dragon", "dark", "steel", "fairy"]
 
 class Pokemon:
     def __init__(self, name, species, level, moves=None):
@@ -13,6 +13,7 @@ class Pokemon:
         self.stats = PokeStats()
         self.currHP = 0
         self.moves = moves if moves is not None else []
+        self.set_base()
         
     #Set base from species
     def set_base(self):

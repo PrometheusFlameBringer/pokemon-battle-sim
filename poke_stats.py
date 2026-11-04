@@ -1,45 +1,45 @@
 class PokeStats:
     def __init__(self):
-        self.HP = 10
-        self.Atk = 10
-        self.Def = 10
-        self.SpAtk = 10
-        self.SpDef = 10
-        self.Spd = 10
+        self.hp = 10
+        self.attack = 10
+        self.defense = 10
+        self.special_attack = 10
+        self.special_defense = 10
+        self.speed = 10
 
-    def set_hp(self, HP):
-        self.HP = HP
+    def set_hp(self, hp):
+        self.hp = hp
 
-    def set_attack(self, Atk):
-        self.Atk = Atk
-        
-    def set_defense(self, Def):
-        self.Def = Def
-        
-    def set_special_attack(self, SpAtk):
-        self.SpAtk = SpAtk
+    def set_attack(self, attack):
+        self.attack = attack
 
-    def set_special_defense(self, SpDef):
-        self.SpDef = SpDef
-        
-    def set_speed(self, Spd):
-        self.Spd = Spd
+    def set_defense(self, defense):
+        self.defense = defense
+
+    def set_special_attack(self, special_attack):
+        self.special_attack = special_attack
+
+    def set_special_defense(self, special_defense):
+        self.special_defense = special_defense
+
+    def set_speed(self, speed):
+        self.speed = speed
 
     def get_hp(self):
-        return self.HP
+        return self.hp
 
     def get_attack(self):
-        return self.Atk
-        
+        return self.attack
+
     def get_defense(self):
-        return self.Def
+        return self.defense
         
     def get_special_attack(self):
-        return self.SpAtk
+        return self.special_attack
 
     def get_special_defense(self):
-        return self.SpDef
+        return self.special_defense
         
     def get_speed(self):
-        return self.Spd
+        return self.speed
     

@@ -1,10 +1,10 @@
 class TypeChart:
     def __init__(self):
         self.types = {
-            "Fire":{"Water":2, "Grass":0.5},
-            "Water":{"Fire":0.5, "Grass":2},
-            "Grass":{"Fire":2, "Water":0.5},
-            "Normal":{}
+            "fire":{"water":2, "grass":0.5},
+            "water":{"fire":0.5, "grass":2},
+            "grass":{"fire":2, "water":0.5},
+            "normal":{}
         }
 
     def get_effectiveness(self, target_type, move_type):

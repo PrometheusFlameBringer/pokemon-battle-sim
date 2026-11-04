@@ -23,7 +23,7 @@ class Displayer:
             
             if self.pokeX.get_currHP() == 0 or self.pokeY.get_currHP() == 0:
                 break
-        print(self.stage.team1[0] | self.stage.team2[0])
+        print(self.stage.team1, " | ", self.stage.team2)
 
     def use_queue(self):
         self.stage.set_queue()

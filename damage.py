@@ -28,6 +28,7 @@ class Damage:
             modifier *= 1.5
 
         #Type Effectiveness
+        print(f"Defender Type 1: {self.defender.type1}, Move Type: {move.poke_type}")
         modifier *= self.typeChart.get_effectiveness(self.defender.type1, move.poke_type) 
         if self.defender.type2:
             modifier *= self.typeChart.get_effectiveness(self.defender.type2, move.poke_type)
