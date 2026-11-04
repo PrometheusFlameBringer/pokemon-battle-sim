@@ -6,7 +6,7 @@ VALID_TYPES = ["Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting"
 class Pokemon:
     def __init__(self, name, species, level, moves=None):
         self.name = name
-        self.species = species
+        self.species = PokemonBase(species)
         self.level = level
         self.type1 = None
         self.type2 = None
@@ -17,6 +17,13 @@ class Pokemon:
     #Set base from species
     def set_base(self):
         self.set_stats()
+        self.set_types()
+
+    def set_types(self):
+        types = self.species.get_types()
+        if len(types)>1:
+            self.type2 = types[1]
+        self.type1 = types[0]
 
     #Stats
     def rotate_stat(self, prefix):
@@ -37,7 +44,7 @@ class Pokemon:
         if EVs is None:
             EVs = {stat: 0 for stat in self.stats.__dict__.keys()}
 
-        cur_stats = PokemonBase(self.species).set_stats(EVs, self.level)
+        cur_stats = self.species.set_stats(EVs, self.level)
         for stat, value in cur_stats.items():
             self.set_stat(stat, value)
 
@@ -69,13 +76,13 @@ class Pokemon:
         return self.currHP
 
     def get_maxHP(self):
-        return self.stats.get_HP()
+        return self.stats.get_hp()
 
     def get_moves(self):
         return self.moves
 
     def full_heal(self):
-        self.currHP = self.stats.get_HP()
+        self.currHP = self.stats.get_hp()
 
     def dmg (self, damage):
         self.currHP -= damage

@@ -11,8 +11,8 @@ class Damage:
         #Declare values
         level = self.attacker.level
         power = move.power
-        attack = self.attacker.stats.get_Atk() if move.physical == "Physical" else self.attacker.stats.get_SpAtk()
-        defense = self.defender.stats.get_Def() if move.physical == "Physical" else self.defender.stats.get_SpDef()
+        attack = self.attacker.stats.get_attack() if move.physical == "Physical" else self.attacker.stats.get_special_attack()
+        defense = self.defender.stats.get_defense() if move.physical == "Physical" else self.defender.stats.get_special_defense()
 
         #Main formula
         damage = (((((2*level)//5)+ 2) * power * (attack/defense))//50) + 2

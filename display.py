@@ -23,7 +23,7 @@ class Displayer:
             
             if self.pokeX.get_currHP() == 0 or self.pokeY.get_currHP() == 0:
                 break
-        print(self.stage.team1 | self.stage.team2)
+        print(self.stage.team1[0] | self.stage.team2[0])
 
     def use_queue(self):
         self.stage.set_queue()
@@ -44,7 +44,7 @@ class Displayer:
     def get_state(self,message=None):
         os.system('cls' if os.name == 'nt' else 'clear')
 
-        print(f"\t\t\t{self.pokeY.species}\n\t\t\t{self.pokeY.currHP}/{self.pokeY.get_maxHP()}\n\n\n{self.pokeX.name}\n{self.pokeX.currHP}/{self.pokeX.get_maxHP()}\n")
+        print(f"\t\t\t{self.pokeY.species.species}\n\t\t\t{self.pokeY.currHP}/{self.pokeY.get_maxHP()}\n\n\n{self.pokeX.name}\n{self.pokeX.currHP}/{self.pokeX.get_maxHP()}\n")
 
         if message:
             print(message)
@@ -72,7 +72,7 @@ class Displayer:
 
     def move(self, moveNum):
         move = self.pokeX.get_move(moveNum)
-        self.stage.add_move(move,self.pokeX.get_stat("Spd"), self.pokeY)
+        self.stage.add_move(move,self.pokeX.get_stat("speed"), self.pokeY)
 
     def switch_poke(self):
         self.pokeX, self.pokeY = self.pokeY, self.pokeX
