@@ -1,5 +1,5 @@
 from poke_stats import PokeStats
-from poke import PokemonBase
+from api_connect import PokemonBase
 
 VALID_TYPES = ["normal", "fire", "water", "electric", "grass", "ice", "fighting", "poison", "ground", "flying", "psychic", "bug", "rock", "ghost", "dragon", "dark", "steel", "fairy"]
 

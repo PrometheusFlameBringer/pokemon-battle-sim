@@ -21,7 +21,7 @@ class Stage:
         damage = self.calculator.calculate_damage(move)
         defender.dmg(damage)
 
-        return f"{move.user.name} dealt {damage} damage"
+        return move.user.name, damage
 
     def team_heal(self, team):
         for i in team:

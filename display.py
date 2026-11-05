@@ -13,7 +13,12 @@ class Displayer:
         if self.heal:
             self.stage.heal_all()
 
+        self.set_stage()
+
+    def set_stage(self):
         self.pokeY, self.pokeX = self.stage.get_start()
+
+        #next shit
 
         while True:
             for i in range(2):
@@ -23,7 +28,8 @@ class Displayer:
             
             if self.pokeX.get_currHP() == 0 or self.pokeY.get_currHP() == 0:
                 break
-        print(self.stage.team1, " | ", self.stage.team2)
+        
+        self.set_stage()
 
     def use_queue(self):
         self.stage.set_queue()
@@ -32,7 +38,7 @@ class Displayer:
         for i in queue:
             pokeMove = i[0]
             self.rotation(f"{pokeMove.user.name} used {pokeMove.name}")
-            self.get_state(self.stage.use_move(pokeMove))
+            self.get_state("%s dealt %d damage" % self.stage.use_move(pokeMove))
 
         self.stage.move_queue.clear()
         self.stage.moves_list.clear()
@@ -42,7 +48,7 @@ class Displayer:
         self.get_state(message)
 
     def get_state(self,message=None):
-        os.system('cls' if os.name == 'nt' else 'clear')
+        self.clear()
 
         print(f"\t\t\t{self.pokeY.species.species}\n\t\t\t{self.pokeY.currHP}/{self.pokeY.get_maxHP()}\n\n\n{self.pokeX.name}\n{self.pokeX.currHP}/{self.pokeX.get_maxHP()}\n")
 
@@ -64,7 +70,7 @@ class Displayer:
             if x > len(moves) or x < 1:
                 raise ValueError()
         except:
-            os.system('cls' if os.name == 'nt' else 'clear')
+            self.clear()
             input("Invalid input please enter the number of the move.\nPress enter to continue...")
             return -1
         else:
@@ -76,3 +82,6 @@ class Displayer:
 
     def switch_poke(self):
         self.pokeX, self.pokeY = self.pokeY, self.pokeX
+
+    def clear(self):
+        os.system('cls' if os.name == 'nt' else 'clear')

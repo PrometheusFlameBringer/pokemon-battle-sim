@@ -4,44 +4,46 @@ class PokemonBase:
     def __init__(self,species:str):
         self.species = species
         self.data = None
-        self.dataset = None
+        self.battleset = None
         self.backup()
         self.connect()
 
     def backup(self):
-        filename = "dataset.json"
+        filename = "battle.json"
         if os.path.exists(filename):
             with open(filename, "r") as f:
-                self.dataset = json.load(f)
+                self.battleset = json.load(f)
         else:
-            self.dataset = {}
+            self.battleset = {}
             with open(filename, "w") as f:
-                json.dump(self.dataset, f)
+                json.dump(self.battleset, f)
 
     def save(self):
-        filename = "dataset.json"
+        filename = "battle.json"
         with open(filename, "w") as f:
-            json.dump(self.dataset, f)
+            json.dump(self.battleset, f)
 
     def connect(self):
-        if self.species.lower() in self.dataset:
-            self.data = self.dataset[self.species.lower()]
+        if self.species.lower() in self.battleset:
+            self.data = self.battleset[self.species.lower()]
             return
-        print(self.species.lower())
         url = f"https://pokeapi.co/api/v2/pokemon/{self.species.lower()}/"
         response = requests.get(url)
         
         if response.status_code == 200:
             self.data = response.json()
-            self.dataset[self.species.lower()] = self.data
+            self.battleset[self.species.lower()] = {
+                'stats':{stat['stat']['name']: stat['base_stat'] for stat in self.data['stats']},
+                'types':[i['type']['name'] for i in self.data['types']],
+                'ablities':[{i['ability']['name']:{'is_hidden':i['is_hidden'],'id':i['ability']['url'].split('/')[-2]}} for i in self.data['abilities']],
+                'moves':{i['move']['name']:i['move']['url'].split('/')[-2] for i in self.data['moves']}}
             self.save()
         else:
             raise Exception(f"Failed to fetch data for {self.species}. Status code: {response.status_code}")
 
     def get_base_stats(self):
         if self.data:
-            stats = {stat['stat']['name']: stat['base_stat'] for stat in self.data['stats']}
-            return stats
+            return self.data["stats"]
         else:
             raise Exception("No data available. Please connect first.")
 
@@ -58,4 +60,4 @@ class PokemonBase:
         return calculated_stats
 
     def get_types(self):
-        return [i['type']['name'] for i in self.data["types"]]
+        return self.data["types"]
