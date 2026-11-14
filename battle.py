@@ -16,7 +16,7 @@ class Stage:
         if move.accuracy >= 100:
             acc_check = random.randint(1, 100)
             if acc_check > move.accuracy:
-                return f"{move.name} missed"
+                return move.name
 
         damage = self.calculator.calculate_damage(move)
         defender.dmg(damage)
@@ -34,11 +34,12 @@ class Stage:
     def get_alive(self,team):
         for i in range(len(team)):
             if team[i].currHP > 0:
-                return team.pop(i)
+                return team[i]
 
         return -1
 
     def get_start(self):
+        print(self.team1,"|", self.team2)
         return self.get_alive(self.team1),self.get_alive(self.team2)
 
     def add_move(self,move,pokeSpeed, target):

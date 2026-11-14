@@ -18,8 +18,6 @@ class Displayer:
     def set_stage(self):
         self.pokeY, self.pokeX = self.stage.get_start()
 
-        #next shit
-
         while True:
             for i in range(2):
                 self.rotation()
@@ -38,7 +36,8 @@ class Displayer:
         for i in queue:
             pokeMove = i[0]
             self.rotation(f"{pokeMove.user.name} used {pokeMove.name}")
-            self.get_state("%s dealt %d damage" % self.stage.use_move(pokeMove))
+            move_data = self.stage.use_move(pokeMove)
+            self.get_state("%s dealt %d damage" %move_data if len(move_data)>1 else "%s's attack missed" % move_data)
 
         self.stage.move_queue.clear()
         self.stage.moves_list.clear()
@@ -84,4 +83,4 @@ class Displayer:
         self.pokeX, self.pokeY = self.pokeY, self.pokeX
 
     def clear(self):
-        os.system('cls' if os.name == 'nt' else 'clear')
+        os.system('cls' if os.name == 'nt' else 'clear')        

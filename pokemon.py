@@ -1,7 +1,5 @@
 from poke_stats import PokeStats
-from api_connect import PokemonBase
-
-VALID_TYPES = ["normal", "fire", "water", "electric", "grass", "ice", "fighting", "poison", "ground", "flying", "psychic", "bug", "rock", "ghost", "dragon", "dark", "steel", "fairy"]
+from api_connect import PokemonBase, MoveStats
 
 class Pokemon:
     def __init__(self, name, species, level, moves=None):
@@ -65,7 +63,7 @@ class Pokemon:
     #Moves
     def add_move(self, move):
         if len(self.moves) < 4:
-            self.moves.append(move)
+            self.moves.append(Move(move,self))
         else:
             print("Cannot add more than 4 moves.")
 
@@ -116,23 +114,24 @@ class Pokemon:
             print("Invalid input please try again")
             stat = input("Enter stat: ")
         return stat
-
-    
+ 
     
 class Move:
-    def __init__(self, name:str, poke_type:str, physical:str, power:int, accuracy:int, pp:int, priority:int,user:Pokemon, target:Pokemon = None):
-        if poke_type not in VALID_TYPES:
-            raise ValueError(f"{poke_type} is an invalid Pokemon type.")
-        
+    def __init__(self, name:str, user:Pokemon, target:Pokemon = None):     
         self.name = name
-        self.poke_type = poke_type
-        self.physical = physical
-        self.power = power
-        self.accuracy = accuracy
-        self.pp = pp
-        self.priority = priority
+        self.poke_type:str
+        self.physical:str
+        self.power:int
+        self.accuracy :int
+        self.pp:int
+        self.priority:int
         self.user = user
         self.target = target
+        self.set_move()
+
+    def set_move(self):
+        stats = MoveStats(self.name, self.user)
+        self.poke_type,self.physical,self.power,self.accuracy,self.pp,self.priority = stats.get_move_data()
 
     def get_name(self):
         return self.name

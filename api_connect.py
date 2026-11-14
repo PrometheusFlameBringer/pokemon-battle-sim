@@ -22,6 +22,7 @@ class PokemonBase:
         filename = "battle.json"
         with open(filename, "w") as f:
             json.dump(self.battleset, f)
+        self.data = self.battleset[self.species.lower()]
 
     def connect(self):
         if self.species.lower() in self.battleset:
@@ -40,6 +41,13 @@ class PokemonBase:
             self.save()
         else:
             raise Exception(f"Failed to fetch data for {self.species}. Status code: {response.status_code}")
+
+    def get_move_list(self):
+        return self.data['moves'].keys()
+
+    def get_move_id(self, move_name):
+        print(move_name)
+        return self.data['moves'].get(move_name,'eme')
 
     def get_base_stats(self):
         if self.data:
@@ -61,3 +69,60 @@ class PokemonBase:
 
     def get_types(self):
         return self.data["types"]
+
+class MoveStats:
+    def __init__(self, move, user):
+        self.data = None
+        self.move = move
+        self.moveset = None
+        if self.valid_user(user):
+            self.backup()
+            self.connect()
+
+    def backup(self):
+            filename = "moves.json"
+            if os.path.exists(filename):
+                with open(filename, "r") as f:
+                    self.moveset = json.load(f)
+            else:
+                self.moveset = {}
+                with open(filename, "w") as f:
+                    json.dump(self.moveset, f)
+
+    def save(self):
+        filename = "moves.json"
+        with open(filename, "w") as f:
+            json.dump(self.moveset, f)
+        self.data = self.moveset[self.move.lower()]
+
+    def connect(self):
+        if self.move.lower() in self.moveset:
+            self.data = self.moveset[self.move.lower()]
+            return
+        
+        url = f"https://pokeapi.co/api/v2/move/{self.move}/"
+        response = requests.get(url)
+
+        if response.status_code == 200:
+            self.data = response.json()
+            self.moveset[self.data['name']] = {
+                'type': self.data['type']['name'],
+                'damage_class': self.data['damage_class']['name'],
+                'power': self.data['power'],
+                'accuracy': self.data['accuracy'],
+                'pp': self.data['pp'],
+                'priority': self.data['priority'],
+                'description': self.data['flavor_text_entries'][0]['flavor_text']
+            }
+            self.save()
+        else:
+            raise Exception(f"Failed to fetch data for move {self.move}. Status code: {response.status_code}")
+
+    def valid_user(self, user):
+        if self.move.lower() in user.species.get_move_list():
+            return True
+        return False
+
+    def get_move_data(self):
+        info = self.moveset.get(self.move.lower())
+        return info['type'], info['damage_class'], info['power'], info['accuracy'], info['pp'], info['priority']
