@@ -112,7 +112,7 @@ class MoveStats:
                 'accuracy': self.data['accuracy'],
                 'pp': self.data['pp'],
                 'priority': self.data['priority'],
-                'description': self.data['flavor_text_entries'][0]['flavor_text']
+                'description': self.get_move_desc(self.data['flavor_text_entries'])
             }
             self.save()
         else:
@@ -126,3 +126,8 @@ class MoveStats:
     def get_move_data(self):
         info = self.moveset.get(self.move.lower())
         return info['type'], info['damage_class'], info['power'], info['accuracy'], info['pp'], info['priority']
+
+    def get_move_desc(self, entries):
+        for i in entries:
+            if i['language']['name'] == 'en':
+                return i['flavor_text']
