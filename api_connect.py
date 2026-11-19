@@ -2,61 +2,77 @@ import requests, os, json
 
 class PokemonBase:
     def __init__(self,species:str):
-        self.species = species
-        self.data = None
-        self.battleset = None
+        self.species = species.lower()
+        self.battleset = {}
+        self.moveset = {}
+        self.abilityset = {}
+        self.spriteset = {}
         self.backup()
         self.connect()
 
-    def backup(self):
-        filename = "battle.json"
+    def backup(self):        
+        self.battleset = self.set_file("pokemon_base.json")
+        self.moveset = self.set_file("moves_base.json")
+        self.abilityset = self.set_file("abilities_base.json")
+        self.spriteset = self.set_file("sprites_base.json")
+    
+    def set_file(self, filename):
         if os.path.exists(filename):
             with open(filename, "r") as f:
-                self.battleset = json.load(f)
+                return json.load(f)
         else:
-            self.battleset = {}
             with open(filename, "w") as f:
-                json.dump(self.battleset, f)
+                json.dump({}, f)
+            return {}
 
-    def save(self):
-        filename = "battle.json"
+    def save(self,filename,info):
         with open(filename, "w") as f:
-            json.dump(self.battleset, f)
-        self.data = self.battleset[self.species.lower()]
+            json.dump(info, f)
+
+    def set_vars(self):
+        self.battleset = self.battleset[self.species]
+        self.moveset = self.moveset[self.species]
+        self.abilityset = self.abilityset[self.species]
+        self.spriteset = self.spriteset[self.species]
 
     def connect(self):
-        if self.species.lower() in self.battleset:
-            self.data = self.battleset[self.species.lower()]
+        if self.species in self.battleset:
+            self.set_vars()
             return
-        url = f"https://pokeapi.co/api/v2/pokemon/{self.species.lower()}/"
-        response = requests.get(url)
+
+        #If not found
+        url = f"https://pokeapi.co/api/v2/pokemon/{self.species}/"
+
+        try:
+            response = requests.get(url)
+        except:
+            print("fail")
         
         if response.status_code == 200:
-            self.data = response.json()
-            self.battleset[self.species.lower()] = {
-                'stats':{stat['stat']['name']: stat['base_stat'] for stat in self.data['stats']},
-                'types':[i['type']['name'] for i in self.data['types']],
-                'ablities':[{i['ability']['name']:{'is_hidden':i['is_hidden'],'id':i['ability']['url'].split('/')[-2]}} for i in self.data['abilities']],
-                'moves':{i['move']['name']:i['move']['url'].split('/')[-2] for i in self.data['moves']}}
-            self.save()
+            data = response.json()
+            self.battleset[self.species], self.moveset[self.species], self.abilityset[self.species], self.spriteset[self.species] = {'stats':{stat['stat']['name']: stat['base_stat'] for stat in data['stats']}, 'types':[i['type']['name'] for i in data['types']]}, {i['move']['name']:i['move']['url'].split('/')[-2] for i in data['moves']}, [{i['ability']['name']:{'is_hidden':i['is_hidden'],'id':i['ability']['url'].split('/')[-2]}} for i in data['abilities']], {"front_default":data['sprites']["front_default"],"front_shiny":data['sprites']["front_shiny"],"back_default":data['sprites']["back_default"],"back_shiny":data['sprites']["back_default"]}
+            
+            for i,j in {"pokemon_base.json":self.battleset,"moves_base.json":self.moveset,"abilities_base.json":self.abilityset,"sprites_base.json":self.spriteset}.items():
+                self.save(i,j)
         else:
             raise Exception(f"Failed to fetch data for {self.species}. Status code: {response.status_code}")
+        
+        self.set_vars()
 
     def get_move_list(self):
-        return self.data['moves'].keys()
+        return self.moveset.keys()
 
     def get_move_id(self, move_name):
-        print(move_name)
-        return self.data['moves'].get(move_name,'eme')
+        return self.moveset.get(move_name, 'eme')
 
     def get_base_stats(self):
-        if self.data:
-            return self.data["stats"]
+        if self.battleset:
+            return self.battleset["stats"]
         else:
             raise Exception("No data available. Please connect first.")
 
     def set_stats(self,EVs={},lvl=1):
-        if not self.data:
+        if not self.battleset:
             raise Exception("No data available. Please connect first.")
 
         calculated_stats = {}
@@ -68,12 +84,11 @@ class PokemonBase:
         return calculated_stats
 
     def get_types(self):
-        return self.data["types"]
+        return self.battleset["types"]
 
 class MoveStats:
-    def __init__(self, move, user):
-        self.data = None
-        self.move = move
+    def __init__(self, move:str, user):
+        self.move = move.lower()
         self.moveset = None
         if self.valid_user(user):
             self.backup()
@@ -93,38 +108,43 @@ class MoveStats:
         filename = "moves.json"
         with open(filename, "w") as f:
             json.dump(self.moveset, f)
-        self.data = self.moveset[self.move.lower()]
 
     def connect(self):
-        if self.move.lower() in self.moveset:
-            self.data = self.moveset[self.move.lower()]
+        if self.move in self.moveset:
+            self.moveset = self.moveset[self.move]
             return
         
         url = f"https://pokeapi.co/api/v2/move/{self.move}/"
-        response = requests.get(url)
+        
+        try:
+            response = requests.get(url)
+        except:
+            print("fail")
 
         if response.status_code == 200:
-            self.data = response.json()
-            self.moveset[self.data['name']] = {
-                'type': self.data['type']['name'],
-                'damage_class': self.data['damage_class']['name'],
-                'power': self.data['power'],
-                'accuracy': self.data['accuracy'],
-                'pp': self.data['pp'],
-                'priority': self.data['priority'],
-                'description': self.get_move_desc(self.data['flavor_text_entries'])
+            data = response.json()
+            self.move = data['name']
+            self.moveset[data['name']] = {
+                'type': data['type']['name'],
+                'damage_class': data['damage_class']['name'],
+                'power': data['power'],
+                'accuracy': data['accuracy'],
+                'pp': data['pp'],
+                'priority': data['priority'],
+                'description': self.get_move_desc(data['flavor_text_entries'])
             }
             self.save()
         else:
             raise Exception(f"Failed to fetch data for move {self.move}. Status code: {response.status_code}")
-
+        self.moveset = self.moveset[self.move]
+    
     def valid_user(self, user):
-        if self.move.lower() in user.species.get_move_list():
+        if self.move in user.species.get_move_list():
             return True
         return False
 
     def get_move_data(self):
-        info = self.moveset.get(self.move.lower())
+        info = self.moveset
         return info['type'], info['damage_class'], info['power'], info['accuracy'], info['pp'], info['priority']
 
     def get_move_desc(self, entries):

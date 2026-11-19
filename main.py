@@ -18,5 +18,5 @@ team1[1].add_move("Tackle")
 team2[0].add_move("Bubble")
 team2[0].add_move("Tackle")
 
-battle = Stage(team1, team2)
-Displayer(battle)
+#battle = Stage(team1, team2)
+#Displayer(battle)
