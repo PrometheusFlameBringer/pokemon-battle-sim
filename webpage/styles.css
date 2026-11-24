@@ -64,3 +64,24 @@ img{
     width: 100%;
     background-color: black;
 }
+
+.move_container{
+    position: absolute;
+    height: 20vh;
+    width: 50%;
+    background-color: gray;
+    left: 50vw;
+}
+
+.moves{
+    margin: 1vw;
+    height: 16vh;
+    
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 1vw;
+}
+
+.move{
+    background-color: antiquewhite;
+}
