@@ -8,6 +8,8 @@ class Stage:
         self.calculator = None
         self.move_queue = []
         self.moves_list = {}
+        self.team_heal(team1)
+        self.team_heal(team2)
 
     def use_move(self, move):
         attacker, defender = move.get_user(), move.get_target()
@@ -39,7 +41,6 @@ class Stage:
         return -1
 
     def get_start(self):
-        print(self.team1,"|", self.team2)
         return self.get_alive(self.team1),self.get_alive(self.team2)
 
     def add_move(self,move,pokeSpeed, target):

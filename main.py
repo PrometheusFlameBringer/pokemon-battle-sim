@@ -1,6 +1,5 @@
 from pokemon import Pokemon, Move
 from battle import Stage
-from display import Displayer
 from api_connect import MoveStats
 
 team1 = [Pokemon("Red", "Charmander", 100),Pokemon("Green", "Rowlet", 100)]
@@ -18,5 +17,5 @@ team1[1].add_move("Tackle")
 team2[0].add_move("Bubble")
 team2[0].add_move("Tackle")
 
-#battle = Stage(team1, team2)
+battle = Stage(team1, team2)
 #Displayer(battle)
