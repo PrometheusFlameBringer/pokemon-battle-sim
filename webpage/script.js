@@ -6,3 +6,6 @@ const move_c = document.getElementById("move_c");
 const move_d = document.getElementById("move_d");
 
 move_a.innerHTML = "1";
+move_b.innerHTML = "2";
+move_c.innerHTML = "3";
+move_d.innerHTML = "4";
