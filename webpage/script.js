@@ -9,3 +9,12 @@ move_a.innerHTML = "1";
 move_b.innerHTML = "2";
 move_c.innerHTML = "3";
 move_d.innerHTML = "4";
+
+function setPoke(poke) {
+    poke_name = poke.querySelector('h1');
+    poke_sprite = poke.querySelector('img');
+    poke_name.innerHTML = "Clefable";
+    poke_sprite.src = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/36.png";
+}
+
+setPoke(pokemon_a)
